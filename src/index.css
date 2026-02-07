@@ -129,6 +129,15 @@
   }
 }
 
+@keyframes gentleSway {
+  0%, 100% {
+    transform: translateX(-50%) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateX(-50%) rotate(1.5deg);
+  }
+}
+
 @keyframes fadeInUp {
   0% {
     opacity: 0;
@@ -195,6 +204,10 @@
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.animate-gentle-sway {
+  animation: gentleSway 4s ease-in-out infinite;
 }
 
 /* Button styles */
