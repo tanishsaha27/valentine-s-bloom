@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import TulipGarden from './TulipGarden';
+import PremiumFlowerAnimation from './PremiumFlowerAnimation';
 import { Heart } from 'lucide-react';
 
 const ValentineProposal = () => {
@@ -34,8 +34,22 @@ const ValentineProposal = () => {
   return (
     <div 
       ref={containerRef}
-      className="min-h-screen dotted-bg relative overflow-hidden flex flex-col items-center justify-center"
+      className="min-h-screen dotted-bg relative overflow-hidden flex flex-col items-center justify-start pt-16"
     >
+      {/* Main Content - Heading at Top */}
+      <div className={`z-10 text-center px-4 transition-all duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'} absolute top-12`}>
+        {stage === 'proposal' ? (
+          <div className="animate-fade-in-up">
+            {/* Header */}
+            <div className="mb-4">
+              <h1 className="text-4xl md:text-6xl font-bold text-romantic" style={{ fontFamily: 'Cormorant Garamond, serif', letterSpacing: '2px', lineHeight: '1.2', fontWeight: 700 }}>
+                Will You Be My Valentine?
+              </h1>
+            </div>
+          </div>
+        ) : null}
+      </div>
+
       {/* Floating hearts decoration */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {[...Array(8)].map((_, i) => (
@@ -54,23 +68,12 @@ const ValentineProposal = () => {
       </div>
 
       {/* Tulip Garden */}
-      <TulipGarden />
+      <PremiumFlowerAnimation />
 
-      {/* Main Content */}
-      <div className={`z-10 text-center px-4 transition-all duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
+      {/* Main Content - Buttons */}
+      <div className={`z-10 text-center px-4 transition-all duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'} ${stage === 'accepted' ? 'absolute inset-0 overflow-y-auto' : 'absolute bottom-1/4'}`}>
         {stage === 'proposal' ? (
           <div className="animate-fade-in-up">
-            {/* Header */}
-            <div className="mb-12">
-              <Heart className="w-16 h-16 mx-auto mb-6 text-primary animate-heartbeat" />
-              <h1 className="text-4xl md:text-6xl font-bold text-romantic mb-4">
-                Will You Be My Valentine?
-              </h1>
-              <p className="text-xl text-muted-foreground">
-                💕 I have something special to ask you 💕
-              </p>
-            </div>
-
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center relative">
               <button
@@ -92,9 +95,10 @@ const ValentineProposal = () => {
                 No 😢
               </button>
             </div>
-          </div>
+            </div>
+          
         ) : (
-          <div className="animate-fade-in-up max-w-2xl mx-auto">
+          <div className="animate-fade-in-up max-w-2xl mx-auto pt-40 pb-20">
             {/* Dancing Guy GIF */}
             <div className="mb-8">
               <img

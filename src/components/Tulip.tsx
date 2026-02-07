@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
-interface TulipProps {
+interface GrowingFlowerProps {
   delay: number;
-  rotation: number;
-  height: string;
-  color: 'pink' | 'red' | 'light';
+  stemHeight: number;
   offsetX: number;
+  flowerCount: number;
+  stemCurve: number;
 }
 
-const Tulip = ({ delay, rotation, height, color, offsetX }: TulipProps) => {
+const GrowingFlower = ({ delay, stemHeight, offsetX, flowerCount, stemCurve }: GrowingFlowerProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -16,107 +16,75 @@ const Tulip = ({ delay, rotation, height, color, offsetX }: TulipProps) => {
     return () => clearTimeout(timer);
   }, [delay]);
 
-  const petalColors = {
-    pink: 'fill-[hsl(340,80%,65%)]',
-    red: 'fill-[hsl(350,85%,55%)]',
-    light: 'fill-[hsl(350,70%,75%)]',
-  };
-
-  const petalHighlight = {
-    pink: 'fill-[hsl(340,85%,75%)]',
-    red: 'fill-[hsl(350,90%,65%)]',
-    light: 'fill-[hsl(350,75%,85%)]',
-  };
+  // We only need one flower head for the 'Tulip' look in the video
+  const flowerHeadY = 300 - stemHeight;
 
   return (
-    <div
-      className={`absolute bottom-0 origin-bottom transition-all duration-1000 ease-out ${
-        isVisible ? 'opacity-100' : 'opacity-0'
-      }`}
-      style={{ 
-        height,
-        left: '50%',
-        transform: `translateX(calc(-50% + ${offsetX}px)) rotate(${isVisible ? rotation : 0}deg)`,
-        transformOrigin: 'bottom center',
-        transition: `opacity 0.5s ease-out ${delay}ms, transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms`,
+    <g
+      opacity={isVisible ? 1 : 0}
+      style={{
+        transition: `opacity 0.3s ease-out ${delay}ms`,
+        animation: `plantSway 4s ease-in-out ${delay + 2000}ms infinite`,
+        transformOrigin: `${offsetX}px 300px`,
       }}
     >
-      <svg
-        viewBox="0 0 40 120"
-        className="w-full h-full"
+      {/* 1. The Stem: Animated using CSS Keyframes for growth */}
+      <path
+        d={`M ${offsetX} 300 Q ${offsetX + stemCurve} 250 ${offsetX} ${flowerHeadY}`}
+        stroke="#45cba4"
+        strokeWidth="3"
+        fill="none"
+        strokeLinecap="round"
         style={{
-          transform: `scaleY(${isVisible ? 1 : 0})`,
-          transformOrigin: 'bottom',
-          transition: `transform 1s ease-out ${delay}ms`,
+          strokeDasharray: 400,
+          strokeDashoffset: isVisible ? 0 : 400,
+          transition: `stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`,
+          filter: 'drop-shadow(0 0 8px rgba(69, 203, 164, 0.5))',
         }}
-      >
-        {/* Stem */}
-        <path
-          d="M20 120 Q20 80 20 45"
-          stroke="hsl(120, 45%, 32%)"
-          strokeWidth="4"
-          fill="none"
-          strokeLinecap="round"
+      />
+
+      {/* 2. Leaves: Popping in at specific points on the stem */}
+      <g style={{ 
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'scale(1)' : 'scale(0)',
+        transition: `all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay + 800}ms`,
+        transformOrigin: `${offsetX}px 260px`
+      }}>
+        <path d={`M ${offsetX} 260 Q ${offsetX - 20} 250 ${offsetX - 30} 230`} stroke="#45cba4" strokeWidth="3" fill="none" strokeLinecap="round" />
+        <path d={`M ${offsetX} 275 Q ${offsetX + 20} 265 ${offsetX + 30} 245`} stroke="#45cba4" strokeWidth="3" fill="none" strokeLinecap="round" />
+      </g>
+
+      {/* 3. THE FLOWER HEAD: This is where the magic happens */}
+      <g transform={`translate(${offsetX}, ${flowerHeadY})`}>
+        {[0, 72, 144, 216, 288].map((angle, idx) => (
+          <path
+            key={idx}
+            /* A proper teardrop petal path instead of an ellipse */
+            d="M0,0 C-10,-10 -15,-25 0,-35 C15,-25 10,-10 0,0"
+            fill="#fff"
+            style={{
+              filter: 'drop-shadow(0 0 5px white)',
+              transformOrigin: 'bottom center',
+              transform: isVisible ? `rotate(${angle}deg) scale(1)` : `rotate(${angle}deg) scale(0)`,
+              transition: `transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay + 1500 + (idx * 100)}ms`,
+            }}
+          />
+        ))}
+
+        {/* The Glowing Center */}
+        <circle
+          cx="0"
+          cy="0"
+          r={isVisible ? 6 : 0}
+          fill="#ffeb3b"
+          style={{
+            filter: 'drop-shadow(0 0 10px #ffeb3b)',
+            transition: `r 0.5s ease-out ${delay + 2200}ms`,
+          }}
         />
-        
-        {/* Leaves */}
-        <path
-          d="M20 90 Q35 80 30 65 Q25 75 20 85"
-          fill="hsl(120, 50%, 28%)"
-        />
-        <path
-          d="M20 75 Q5 65 10 50 Q15 60 20 70"
-          fill="hsl(120, 50%, 28%)"
-        />
-        
-        {/* Tulip petals - back layer */}
-        <ellipse
-          cx="20"
-          cy="32"
-          rx="10"
-          ry="22"
-          className={petalColors[color]}
-        />
-        
-        {/* Side petals */}
-        <ellipse
-          cx="10"
-          cy="36"
-          rx="8"
-          ry="18"
-          className={petalColors[color]}
-          transform="rotate(-12, 10, 36)"
-        />
-        <ellipse
-          cx="30"
-          cy="36"
-          rx="8"
-          ry="18"
-          className={petalColors[color]}
-          transform="rotate(12, 30, 36)"
-        />
-        
-        {/* Front petal */}
-        <ellipse
-          cx="20"
-          cy="35"
-          rx="7"
-          ry="16"
-          className={petalHighlight[color]}
-        />
-        
-        {/* Inner glow */}
-        <ellipse
-          cx="20"
-          cy="38"
-          rx="4"
-          ry="8"
-          fill="hsl(50, 80%, 70%)"
-          opacity="0.6"
-        />
-      </svg>
-    </div>
+      </g>
+    </g>
   );
 };
 
-export default Tulip;
+export default GrowingFlower;
