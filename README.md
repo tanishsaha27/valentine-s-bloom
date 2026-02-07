@@ -1,73 +1,101 @@
-# Welcome to your Lovable project
+# 💕 Valentine's Bloom - Interactive Proposal Website
 
-## Project info
+A beautiful and interactive Valentine's Day proposal website featuring premium animated blooming flowers, smooth interactions, and a delightful celebration experience.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## ✨ Features
 
-## How can I edit this code?
+- **Stunning Flower Animations**: Premium 3D blooming flowers with realistic petal animations, glowing effects, and swaying leaves
+- **Interactive Proposal**: Two buttons with engaging interactions - a Yes button that leads to celebration, and an evasive No button that moves away
+- **Celebration View**: Beautiful acceptance page with dancing GIF, celebration messages, and a personal message input box
+- **Responsive Design**: Works perfectly on desktop and mobile devices
+- **Dark Aesthetic**: Elegant dark theme with glowing elements and atmospheric lighting
+- **Smooth Transitions**: Fluid animations and transitions throughout the experience
+- **Customizable**: Easy to personalize messages, fonts, colors, and animations
 
-There are several ways of editing your application.
+## 🛠️ Tech Stack
 
-**Use Lovable**
+- **Frontend Framework**: React 18 with TypeScript
+- **Styling**: Tailwind CSS + Custom CSS Animations
+- **Bundler**: Vite
+- **Icons**: Lucide React
+- **Testing**: Vitest
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
 
-Changes made via Lovable will be committed automatically to this repo.
 
-**Use your preferred IDE**
+🚀 Usage
+Customization
+Change the Proposal Text
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Edit the heading in ValentineProposal.tsx
+Modify font, size, and styling in the component
+Change Celebration Date
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Update the date "19th" in the celebration message
+Edit ValentineProposal.tsx line where it says "19th"
+Modify Colors
 
-Follow these steps:
+Update color variables in index.css
+Adjust Tailwind theme in tailwind.config.ts
+Change the Celebration GIF
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Replace the GIF URL in ValentineProposal.tsx
+Use any giphy or image URL
+Adjust Animation Timing
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Modify animation delays in index.css
+Update PremiumFlowerAnimation.tsx for flower timing adjustments
 
-# Step 3: Install the necessary dependencies.
-npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+📁 Project Structure
 
-**Edit a file directly in GitHub**
+src/
+├── components/
+│   ├── PremiumFlowerAnimation.tsx    # Main flower animation component
+│   ├── ValentineProposal.tsx         # Proposal UI component
+│   ├── Tulip.tsx                     # Individual tulip component
+│   ├── TulipGarden.tsx               # Garden container
+│   └── ui/                           # UI component library
+├── App.tsx                           # Main app component
+├── App.css                           # App styles
+├── index.css                         # Global styles & animations
+├── main.tsx                          # Entry point
+└── vite-env.d.ts                     # Type definitions
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+🎨 Animation Features
+Flower System
+Growth Sequence: Stems grow first, followed by leaves and flowers
+3D Effects: Realistic perspective transforms and depth
+Glow Effects: Pulsing glows on flower centers
+Interactive Sway: Flowers gently sway with natural motion
+Particle Effects
+Floating Lights: Yellow and pink glowing particles
+Animated Grass: Swaying grass at the bottom
+Firefly Particles: Drifting particles with fade animations
+🎯 Features Breakdown
+Proposal Stage
+Large elegant heading asking "Will You Be My Valentine?"
+Yes button with glow effect
+Interactive No button that escapes cursor
 
-**Use GitHub Codespaces**
+Celebration Stage
+Dancing celebration GIF
+Success message with celebration emoji
+Custom message input box
+Floating heart animations
+Personalization prompt
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
+📱 Browser Support
+Chrome/Chromium (Latest)
+Firefox (Latest)
+Safari (Latest)
+Edge (Latest)
+Mobile browsers (iOS Safari, Chrome Mobile)
 
-This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+🎁 Perfect For
+Valentine's Day proposals
+Anniversary celebrations
+Romantic gestures
+Special occasions
+Love confessions
