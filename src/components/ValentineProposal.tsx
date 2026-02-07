@@ -27,8 +27,8 @@ const ValentineProposal = () => {
     setSaveStatus('saving');
     const timer = setTimeout(async () => {
       const { error } = await supabase
-        .from('valentine_responses')
-        .insert({ response: trimmed });
+        .from('anniversary_responses')
+        .insert({ response_text: trimmed });
 
       setSaveStatus(error ? 'error' : 'saved');
     }, 800);
