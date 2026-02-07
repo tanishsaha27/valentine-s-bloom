@@ -34,7 +34,7 @@ const TulipGarden = () => {
   ];
 
   return (
-    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-80 h-56 pointer-events-none">
+    <div className="absolute bottom-8 left-1/2 w-80 h-56 pointer-events-none animate-gentle-sway">
       {/* Ribbon/Wrapper at the bottom */}
       <div 
         className={`absolute bottom-0 left-1/2 -translate-x-1/2 transition-all duration-700 ease-out ${
