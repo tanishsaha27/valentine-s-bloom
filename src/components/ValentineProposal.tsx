@@ -1,18 +1,40 @@
 import { useState, useRef, useEffect } from 'react';
 import PremiumFlowerAnimation from './PremiumFlowerAnimation';
 import { Heart } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const ValentineProposal = () => {
   const [stage, setStage] = useState<'proposal' | 'accepted'>('proposal');
   const [noButtonPosition, setNoButtonPosition] = useState({ x: 0, y: 0 });
   const [showContent, setShowContent] = useState(false);
   const [response, setResponse] = useState('');
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowContent(true), 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (stage !== 'accepted') return;
+    const trimmed = response.trim();
+    if (!trimmed) {
+      setSaveStatus('idle');
+      return;
+    }
+
+    setSaveStatus('saving');
+    const timer = setTimeout(async () => {
+      const { error } = await supabase
+        .from('valentine_responses')
+        .insert({ response: trimmed });
+
+      setSaveStatus(error ? 'error' : 'saved');
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [response, stage]);
 
   const moveNoButton = () => {
     if (!containerRef.current) return;
@@ -130,6 +152,14 @@ const ValentineProposal = () => {
                 className="romantic-textarea min-h-32 resize-none text-lg"
                 rows={4}
               />
+
+              {saveStatus !== 'idle' && (
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {saveStatus === 'saving' && 'Saving your response...'}
+                  {saveStatus === 'saved' && 'Saved to your Supabase database.'}
+                  {saveStatus === 'error' && 'Could not save. Check Supabase settings.'}
+                </p>
+              )}
               
               {response && (
                 <div className="mt-6 animate-fade-in-up">
