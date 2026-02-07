@@ -9,6 +9,7 @@ const ValentineProposal = () => {
   const [showContent, setShowContent] = useState(false);
   const [response, setResponse] = useState('');
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [lastSavedAt, setLastSavedAt] = useState<string>('');
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,7 +31,13 @@ const ValentineProposal = () => {
         .from('anniversary_responses')
         .insert({ response_text: trimmed });
 
-      setSaveStatus(error ? 'error' : 'saved');
+      if (error) {
+        setSaveStatus('error');
+        return;
+      }
+
+      setSaveStatus('saved');
+      setLastSavedAt(new Date().toLocaleTimeString());
     }, 800);
 
     return () => clearTimeout(timer);
@@ -153,13 +160,21 @@ const ValentineProposal = () => {
                 rows={4}
               />
 
-              {saveStatus !== 'idle' && (
-                <p className="mt-3 text-sm text-muted-foreground">
-                  {saveStatus === 'saving' && 'Saving your response...'}
-                  {saveStatus === 'saved' && 'Saved to your Supabase database.'}
-                  {saveStatus === 'error' && 'Could not save. Check Supabase settings.'}
-                </p>
-              )}
+              <div
+                aria-live="polite"
+                className={`mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium shadow-sm ${
+                  saveStatus === 'error'
+                    ? 'bg-red-500/20 text-red-200 border border-red-400/40'
+                    : saveStatus === 'saved'
+                      ? 'bg-emerald-500/20 text-emerald-100 border border-emerald-400/40'
+                      : 'bg-white/10 text-white/80 border border-white/20'
+                }`}
+              >
+                {saveStatus === 'idle' && 'Auto-save is on. Start typing to save.'}
+                {saveStatus === 'saving' && 'Saving your response...'}
+                {saveStatus === 'saved' && `Saved at ${lastSavedAt}.`}
+                {saveStatus === 'error' && 'Could not save. Check Supabase table/RLS settings.'}
+              </div>
               
               {response && (
                 <div className="mt-6 animate-fade-in-up">
